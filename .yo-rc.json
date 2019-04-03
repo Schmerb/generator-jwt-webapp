@@ -1,0 +1,9 @@
+{
+  "generator-node": {
+    "promptValues": {
+      "authorName": "Mike Schmerbeck",
+      "authorEmail": "mike.schmerbeck@thevirtualforge.com",
+      "authorUrl": ""
+    }
+  }
+}
