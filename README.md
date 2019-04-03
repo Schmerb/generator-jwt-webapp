@@ -1,4 +1,6 @@
-# generator-jwt-webapp [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
+# generator-jwt-webapp [![NPM version][npm-image]][npm-url]
+
+ <!-- [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url] -->
 
 ## Installation
 
@@ -50,9 +52,9 @@ Apache-2.0 © [Mike Schmerbeck]()
 
 [npm-image]: https://badge.fury.io/js/generator-jwt-webapp.svg
 [npm-url]: https://npmjs.org/package/generator-jwt-webapp
-[travis-image]: https://travis-ci.org//generator-jwt-webapp.svg?branch=master
-[travis-url]: https://travis-ci.org//generator-jwt-webapp
-[daviddm-image]: https://david-dm.org//generator-jwt-webapp.svg?theme=shields.io
-[daviddm-url]: https://david-dm.org//generator-jwt-webapp
+[travis-image]: https://travis-ci.org/generator-jwt-webapp.svg?branch=master
+[travis-url]: https://travis-ci.org/generator-jwt-webapp
+[daviddm-image]: https://david-dm.org/generator-jwt-webapp.svg?theme=shields.io
+[daviddm-url]: https://david-dm.org/generator-jwt-webapp
 [coveralls-image]: https://coveralls.io/repos//generator-jwt-webapp/badge.svg
 [coveralls-url]: https://coveralls.io/r//generator-jwt-webapp
