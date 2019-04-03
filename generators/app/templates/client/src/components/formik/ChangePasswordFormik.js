@@ -6,9 +6,8 @@ import styled, { css } from 'styled-components';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 import Button from 'components/atoms/Button';
-import Checkbox from 'components/atoms/Checkbox';
 
-import { login } from 'actions/auth';
+import { flashSuccess, flashError } from 'actions/flashMessage';
 import { updateUser } from 'actions/user';
 
 import useClearTimeout from 'utils/hooks/useClearTimeout';
@@ -32,13 +31,16 @@ const ChangePasswordFormik = ({
   dispatch,
   router,
   onRequestClose,
+  bindResetForm,
   setLoading,
   setLoadingText,
-  // doneLoading,
+  doneLoading,
 }) => {
   const submitText = 'submitText';
   let timeoutSubmit;
   useClearTimeout(timeoutSubmit);
+  let timeoutReset;
+  useClearTimeout(timeoutReset);
   return (
     <FormikContainer>
       <Formik
@@ -54,8 +56,8 @@ const ChangePasswordFormik = ({
             errors.password = 'Required';
           } else if (!values.newPassword) {
             errors.newPassword = 'Required';
-          } else if (values.newPassword.length < 8) {
-            errors.password = 'Password must be a minimum of 9 characters.';
+          } else if (values.newPassword.length < 10) {
+            errors.newPassword = 'Password must be a minimum of 10 characters.';
           } else if (!values.rePassword) {
             errors.rePassword = 'Required';
           } else if (values.newPassword !== values.rePassword) {
@@ -64,26 +66,42 @@ const ChangePasswordFormik = ({
 
           return errors;
         }}
-        onSubmit={(values, { setSubmitting, setFieldError }) => {
+        onSubmit={(
+          values,
+          { setSubmitting, setFieldValue, setFieldError, resetForm },
+        ) => {
           setLoading(true);
-          setLoadingText('Signing up...');
-          const user = {
-            password: values.newPassword,
-          };
+          setLoadingText('Updating password...');
           timeoutSubmit = setTimeout(() => {
-            setLoading(false);
-            setLoadingText('');
-            dispatch(updateUser(user))
+            doneLoading();
+            const userCreds = {
+              password: values.password,
+              newPassword: values.newPassword,
+            };
+
+            dispatch(updateUser(userCreds))
               .then(res => {
-                console.log({ res });
+                onRequestClose();
+                dispatch(flashSuccess('Successfully updated password!'));
+                timeoutReset = setTimeout(resetForm, 400);
               })
-              .catch(err => console.log({ err }));
+              .catch(error => {
+                if (error.code === 401) {
+                  setFieldError('password', 'Password Incorrect.');
+                }
+                if (error.message) {
+                  dispatch(flashError(error.message));
+                } else {
+                  dispatch(flashError());
+                }
+              });
 
             setSubmitting(false);
           }, 400);
         }}
       >
-        {({ isSubmitting, errors, touched, submitCount }) => {
+        {({ isSubmitting, errors, touched, submitCount, resetForm }) => {
+          bindResetForm(resetForm);
           return (
             <Form>
               <Container>
@@ -133,8 +151,10 @@ ChangePasswordFormik.propTypes = {
   onRequestClose: PropTypes.func.isRequired,
   dispatch: PropTypes.func.isRequired,
   router: PropTypes.object.isRequired,
-  setLoading: PropTypes.func,
-  setLoadingText: PropTypes.func,
+  bindResetForm: PropTypes.func.isRequired,
+  doneLoading: PropTypes.func.isRequired,
+  setLoading: PropTypes.func.isRequired,
+  setLoadingText: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({});

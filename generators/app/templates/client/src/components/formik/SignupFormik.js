@@ -9,6 +9,7 @@ import Button from 'components/atoms/Button';
 import Checkbox from 'components/atoms/Checkbox';
 
 import { login } from 'actions/auth';
+import { flashSuccess, flashError } from 'actions/flashMessage';
 
 import { createUser } from 'utils/http/user';
 import useClearTimeout from 'utils/hooks/useClearTimeout';
@@ -28,7 +29,13 @@ const renderField = (type, name, placeholder) => {
   );
 };
 
-const signUserUp = ({ values, dispatch, router, doneLoading }) => {
+const signUserUp = ({
+  values,
+  dispatch,
+  router,
+  doneLoading,
+  setFieldError,
+}) => {
   const user = {
     firstName: values.firstName,
     lastName: values.lastName,
@@ -49,15 +56,18 @@ const signUserUp = ({ values, dispatch, router, doneLoading }) => {
           redirect: false,
         };
         dispatch(login(loginUserObject))
-          .then(isSuccess => {
+          .then(async isSuccess => {
             doneLoading();
             if (isSuccess) {
-              router.push('/dashboard');
+              await router.push('/dashboard');
+              dispatch(flashSuccess('Successfully created new user!'));
             }
           })
           .catch(error => {
             doneLoading();
-            // dispatch(flashError());
+            dispatch(
+              flashError('Something went wrong trying to log new user in.'),
+            );
           });
       }
     })
@@ -65,6 +75,8 @@ const signUserUp = ({ values, dispatch, router, doneLoading }) => {
       doneLoading();
       // eslint-disable-next-line
       console.log({ err });
+      setFieldError(err.location, err.message);
+      dispatch(flashError(err.message));
     });
 };
 
@@ -84,6 +96,7 @@ const SignupFormik = ({
         initialValues={{
           firstName: '',
           lastName: '',
+          username: '',
           email: '',
           password: '',
           rePassword: '',
@@ -167,7 +180,12 @@ const SignupFormik = ({
                       fill="cornflowerblue"
                       label="Label"
                       component={Checkbox}
-                      CustomLabel={() => 'CheckboxCustomLabel'}
+                      renderLabel={() => (
+                        <span>
+                          I agree to <a href="#!">Terms</a> &
+                          <a href="#!">Conditions</a>
+                        </span>
+                      )}
                       onChange={checked => {
                         setFieldValue('checkbox', checked);
                       }}

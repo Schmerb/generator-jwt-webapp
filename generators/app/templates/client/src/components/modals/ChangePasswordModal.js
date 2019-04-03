@@ -8,11 +8,21 @@ import ChangePasswordFormik from 'components/formik/ChangePasswordFormik';
 const ChangePasswordModal = ({ isOpen, onRequestClose }) => {
   const [loading, setLoading] = useState(false);
   const [loadingText, setLoadingText] = useState('Loading ...');
+  const doneLoading = () => {
+    setLoading(false);
+    setLoadingText('');
+  };
+
+  let resetForm;
+
   return (
     <Modal
       clickOutsideClose={false}
       isOpen={isOpen}
-      onRequestClose={onRequestClose}
+      onRequestClose={() => {
+        resetForm();
+        onRequestClose();
+      }}
       loading={loading}
       loadingText={loadingText}
       maxWidth="400px"
@@ -26,8 +36,12 @@ const ChangePasswordModal = ({ isOpen, onRequestClose }) => {
       <Container>
         <ChangePasswordFormik
           onRequestClose={onRequestClose}
+          doneLoading={doneLoading}
           setLoading={setLoading}
           setLoadingText={setLoadingText}
+          bindResetForm={_resetForm => {
+            resetForm = _resetForm;
+          }}
         />
       </Container>
     </Modal>

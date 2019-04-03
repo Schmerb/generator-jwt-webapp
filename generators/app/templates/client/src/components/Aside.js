@@ -1,13 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import styled, { css } from 'styled-components';
 
 import AsideSlider from 'components/AsideSlider';
-import CloseIcon from 'components/icons/CloseIcon';
-import IconButton from 'components/atoms/IconButton';
 
-import { colors } from 'utils/theme';
 import useClearTimeout from 'utils/hooks/useClearTimeout';
 
 import {
@@ -16,9 +12,8 @@ import {
   closeMenu,
   showChangePasswordModal,
 } from 'actions/display';
-import { clearUserState } from 'actions/user';
-
-import { deleteUser } from 'utils/http/user';
+import { clearUserState, deleteUser } from 'actions/user';
+import { flashSuccess, flashError } from 'actions/flashMessage';
 
 const Aside = props => {
   const { dispatch } = props;
@@ -47,16 +42,20 @@ const Aside = props => {
               dispatch(clearUserState());
               timeout = setTimeout(() => {
                 dispatch(closeModal());
+                dispatch(flashSuccess('User successfully deleted!'));
               }, 500);
             }
           })
           .catch(err => {
+            // eslint-disable-next-line
             console.log({ err });
+            dispatch(flashError());
           });
       },
       onCancel: () => {
         // optional callback
         // modal will close itself eitherway
+        // eslint-disable-next-line
         console.log('onCancel');
       },
       renderPrompt: () => (

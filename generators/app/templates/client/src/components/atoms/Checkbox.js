@@ -34,7 +34,7 @@ class Checkbox extends PureComponent {
       visible,
       fill,
       emptyFill,
-      CustomLabel,
+      renderLabel,
     } = this.props;
     const IconComponent = checked
       ? CheckboxChecked
@@ -43,8 +43,8 @@ class Checkbox extends PureComponent {
       : CheckboxIcon;
 
     let labelComponent;
-    if (CustomLabel) {
-      labelComponent = <CustomLabel />;
+    if (renderLabel) {
+      labelComponent = renderLabel();
     } else if (label) {
       labelComponent = <span>{label}</span>;
     }

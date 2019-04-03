@@ -8,7 +8,7 @@ export const createUser = (req, res) => {
   const missingField = requiredFields.find(field => !(field in req.body));
 
   if (missingField) {
-    return res.status(422).json({
+    return Promise.reject({
       code: 422,
       reason: "ValidationError",
       message: "Missing field",
@@ -28,8 +28,7 @@ export const createUser = (req, res) => {
   );
 
   if (nonStringField) {
-    return res.status(422).json({
-      code: 422,
+    return Promise.reject({
       reason: "ValidationError",
       message: "Incorrect field type: expected string",
       location: nonStringField
@@ -42,7 +41,7 @@ export const createUser = (req, res) => {
   );
 
   if (nonTrimmedField) {
-    return res.status(422).json({
+    return Promise.reject({
       code: 422,
       reason: "ValidationError",
       message: "Cannot start or end with whitespace",
@@ -73,7 +72,7 @@ export const createUser = (req, res) => {
   );
 
   if (tooSmallField || tooLargeField) {
-    return res.status(422).json({
+    return Promise.reject({
       code: 422,
       reason: "ValidationError",
       message: tooSmallField
@@ -166,7 +165,7 @@ export const getAllUsers = (req, res) => {
 };
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// Updates user document -- NOT IN USE
+// Updates user document
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 export const updateUser = async (req, res) => {
   const updatableFields = [
@@ -175,13 +174,16 @@ export const updateUser = async (req, res) => {
     "lastName",
     "username",
     "phoneNumber",
-    "password",
-    "newPassword"
+    "password"
   ];
+  console.log({ body: req.body });
 
-  const updatedUser = updatableFields
-    .filter(field => field in req.body)
-    .reduce((acc, field) => ({ ...acc, [field]: req.body[field] }), {});
+  const updatedUser = {};
+  updatableFields.forEach(field => {
+    if (field in req.body) {
+      updatedUser[field] = req.body[field];
+    }
+  });
 
   // validate new email/phone
   if ("email" in updatedUser) {
@@ -226,55 +228,94 @@ export const updateUser = async (req, res) => {
     }
   }
 
-  if ("password" in updatedUser) {
-    const sizedFields = {
-      // username: {
-      //   min: 1
-      // },
-      password: {
-        min: 10,
-        // bcrypt truncates after 72 characters, so let's not give the illusion
-        // of security by storing extra (unused) info
-        max: 72
-      }
-    };
-    const tooSmallField = Object.keys(sizedFields).find(
-      field =>
-        "min" in sizedFields[field] &&
-        typeof req.body[field] !== "undefined" &&
-        req.body[field].trim().length < sizedFields[field].min
-    );
-    const tooLargeField = Object.keys(sizedFields).find(
-      field =>
-        "max" in sizedFields[field] &&
-        typeof req.body[field] !== "undefined" &&
-        req.body[field].trim().length > sizedFields[field].max
-    );
-
-    if (tooSmallField || tooLargeField) {
-      return res.status(422).json({
-        code: 422,
-        reason: "ValidationError",
-        message: tooSmallField
-          ? `Must be at least ${sizedFields[tooSmallField].min} characters long`
-          : `Must be at most ${sizedFields[tooLargeField].max} characters long`,
-        location: tooSmallField || tooLargeField
-      });
-    }
-    const { password } = req.body;
+  let isValid;
+  let user;
+  if ("password" in updatedUser && "newPassword" in req.body) {
+    // first check if password is valid for current user
     try {
-      const hash = await User.hashPassword(password);
-      updatedUser.password = hash;
-      console.log({ hash });
-    } catch (err) {
-      console.log({ err });
+      user = await User.findById(req.user.id).exec();
+    } catch (error) {
+      console.log({ error });
     }
+    try {
+      console.log("validatePassword: ");
+      // check if original password is correct
+      isValid = await user.validatePassword(updatedUser.password);
+      console.log({ isValid });
+    } catch (error) {
+      console.log({ error });
+    }
+
+    if (isValid) {
+      const sizedFields = {
+        // username: {
+        //   min: 1
+        // },
+        password: {
+          min: 10,
+          // bcrypt truncates after 72 characters, so let's not give the illusion
+          // of security by storing extra (unused) info
+          max: 72
+        }
+      };
+      const tooSmallField = Object.keys(sizedFields).find(
+        field =>
+          "min" in sizedFields[field] &&
+          typeof req.body[field] !== "undefined" &&
+          req.body[field].trim().length < sizedFields[field].min
+      );
+      const tooLargeField = Object.keys(sizedFields).find(
+        field =>
+          "max" in sizedFields[field] &&
+          typeof req.body[field] !== "undefined" &&
+          req.body[field].trim().length > sizedFields[field].max
+      );
+
+      if (tooSmallField || tooLargeField) {
+        return Promise.reject({
+          code: 422,
+          reason: "ValidationError",
+          message: tooSmallField
+            ? `Must be at least ${
+                sizedFields[tooSmallField].min
+              } characters long`
+            : `Must be at most ${
+                sizedFields[tooLargeField].max
+              } characters long`,
+          location: tooSmallField || tooLargeField
+        });
+      }
+
+      const { newPassword } = req.body;
+      try {
+        const hash = await User.hashPassword(newPassword);
+        updatedUser.password = hash;
+      } catch (err) {
+        console.log({ err });
+      }
+    }
+  }
+
+  if (!isValid) {
+    return res.status(401).json({
+      code: 401,
+      reason: "ValidationError",
+      message: "Password is incorrect, please try again.",
+      location: "password"
+    });
   }
 
   User.findByIdAndUpdate(req.user.id, { $set: updatedUser }, { new: true })
     .exec()
-    .then(_updatedUser => res.status(201).json(_updatedUser.apiRepr()))
+    .then(_updatedUser => {
+      if (_updatedUser) {
+        return res.status(201).json(_updatedUser.apiRepr());
+      }
+      return res.status(201);
+    })
     .catch(err => {
+      console.log({ err });
+
       // Forward validation errors on to the client, otherwise give a 500
       // error because something unexpected has happened
       if (err.reason === "ValidationError") {
@@ -286,9 +327,9 @@ export const updateUser = async (req, res) => {
     });
 };
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// Deletes user's account from db
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+/**
+ * Deletes user's account from db
+ */
 export const deleteAccount = (req, res) => {
   return User.findByIdAndRemove(req.user.id)
     .exec()

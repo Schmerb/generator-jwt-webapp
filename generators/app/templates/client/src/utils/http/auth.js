@@ -22,6 +22,11 @@ export const login = ({ username, password }) =>
           const data = await res.json();
           return resolve({ status: 200, data });
         }
+        if (res.status === 401) {
+          // reject if unauthorized
+          const err = { status: 401, message: 'Unathorized' };
+          reject(err);
+        }
         // return entire response if not OK
         resolve(res);
       })

@@ -79,6 +79,7 @@ export const deleteUser = authToken =>
       .catch(err => {
         const { reason } = err;
         if (reason === 'ValidationError') {
+          // eslint-disable-next-line
           console.log(err);
           reject(err);
         }

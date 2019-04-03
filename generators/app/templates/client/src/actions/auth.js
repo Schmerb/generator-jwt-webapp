@@ -50,9 +50,7 @@ export const login = ({
         }
         resolve(true);
       })
-      .catch(error => {
-        reject(error);
-      });
+      .catch(err => reject(err));
   });
 
 export const checkForAuthToken = () => dispatch =>

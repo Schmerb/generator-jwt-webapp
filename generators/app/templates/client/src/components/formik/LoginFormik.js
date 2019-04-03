@@ -9,9 +9,9 @@ import Button from 'components/atoms/Button';
 import Checkbox from 'components/atoms/Checkbox';
 
 import { login } from 'actions/auth';
+import { flashSuccess, flashError } from 'actions/flashMessage';
 
 import { getCookie, setCookie } from 'utils/cookies';
-// import { login } from 'utils/http/auth';
 
 const errorStyles = {
   color: 'red',
@@ -46,13 +46,20 @@ const logUserIn = ({
 
   dispatch(login({ username: email, password, router }))
     .then(res => {
+      console.log({ res });
       setLoading(false);
       setLoadingText('');
+      dispatch(flashSuccess('Successfully logged in!'));
     })
     .catch(error => {
       setLoading(false);
       setLoadingText('');
-      // dispatch(flashError());
+      if (error.status === 401) {
+        dispatch(
+          flashError(`${error.message} -- Username and/or Password Incorrect.`),
+        );
+        setFieldError('server', 'Username and/or Password Incorrect.');
+      }
     });
 };
 
@@ -67,14 +74,15 @@ const LoginFormik = ({ dispatch, router, setLoading, setLoadingText }) => {
           let errors = {};
           if (!values.email) {
             errors.email = 'Required';
+          } else if (
+            values.email.includes('@') &&
+            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+          ) {
+            // can be username, so check if @ symbol exists to validate email
+            errors.email = 'Invalid email address';
           } else if (!values.password) {
             errors.password = 'Required';
           }
-          // else if (
-          //   !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-          // ) {
-          //   errors.email = 'Invalid email address';
-          // }
 
           return errors;
         }}
@@ -201,12 +209,13 @@ const InputsWrapper = styled.div`
   ${({ hasError }) =>
     hasError &&
     css`
-      border-color: 'red';
+      border-color: red;
     `}
 `;
 
 const ServerError = styled.div`
-  color: 'red';
+  margin-top: 10px;
+  color: red;
 `;
 
 const FieldWrapper = styled.div`
