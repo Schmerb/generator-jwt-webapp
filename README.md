@@ -9,11 +9,11 @@ npm install -g yo
 npm install -g generator-jwt-webapp
 ```
 
-Also, make sure to have [MongoDB](https://www.mongodb.com/) installed and run `mongod` or be using a remote DB Uri.
+Also, make sure to have [MongoDB](https://www.mongodb.com/) installed and run `mongod` or create project using a remote DB Uri.
 Then generate your new project:
 
 ```bash
-yo node-jwt
+yo jwt-webapp
 ```
 
 ## Getting To Know Yeoman
