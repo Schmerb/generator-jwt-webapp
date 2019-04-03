@@ -176,7 +176,6 @@ export const updateUser = async (req, res) => {
     "phoneNumber",
     "password"
   ];
-  console.log({ body: req.body });
 
   const updatedUser = {};
   updatableFields.forEach(field => {
@@ -238,10 +237,8 @@ export const updateUser = async (req, res) => {
       console.log({ error });
     }
     try {
-      console.log("validatePassword: ");
       // check if original password is correct
       isValid = await user.validatePassword(updatedUser.password);
-      console.log({ isValid });
     } catch (error) {
       console.log({ error });
     }
