@@ -13,7 +13,14 @@
   ],
   "main": "generators/index.js",
   "keywords": [
-    "",
+    "react",
+    "redux",
+    "nextJS",
+    "node",
+    "express",
+    "mongoDB",
+    "mongoose",
+    "yeoman",
     "yeoman-generator"
   ],
   "devDependencies": {
