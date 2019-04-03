@@ -1,0 +1,6 @@
+{
+  "name": "<%= name %>",
+  "scripts": {
+    "start": "nodemon --exec babel-node server.js"
+  }
+}

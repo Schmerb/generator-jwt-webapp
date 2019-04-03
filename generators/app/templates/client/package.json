@@ -1,0 +1,9 @@
+{
+  "name": "<%= name %>",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "next <%= nextPath %>",
+    "build": "next build <%= nextPath %>",
+    "start": "next start <%= nextPath %>"
+  }
+}
