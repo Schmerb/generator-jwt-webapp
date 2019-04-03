@@ -4,7 +4,7 @@
 
 ## Installation
 
-1. First, install [Yeoman](http://yeoman.io) and generator-jwt-webapp using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
+First, install [Yeoman](http://yeoman.io) and generator-jwt-webapp using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
 
 ```bash
 npm install -g yo
@@ -12,9 +12,8 @@ npm install -g generator-jwt-webapp
 ```
 
 - Also, make sure to have [MongoDB](https://www.mongodb.com/) installed and run `mongod` or create project using a remote DB Uri.
-  Then generate your new project:
 
-2. Next, create root folder where project will live and navigate to it.
+Next, create root folder where project will live and navigate to it:
 
 - `myDirectory` can be <i>anything</i>
 
@@ -22,13 +21,13 @@ npm install -g generator-jwt-webapp
 mkdir myDirectory && cd myDirectory
 ```
 
-3. Finally, call the generator
+Finally, generate your new project:
 
 ```bash
 yo jwt-webapp
 ```
 
-4. <b>Follow Instructions...</b>
+<b>Follow Instructions...</b>
 
 ## Running the Webapp
 
