@@ -3,11 +3,6 @@ const Generator = require("yeoman-generator");
 const chalk = require("chalk");
 const yosay = require("yosay");
 
-const goToDir = dir => {
-  const directory = process.cwd() + "/" + dir;
-  process.chdir(directory);
-};
-
 module.exports = class extends Generator {
   // The name `constructor` is important here
   constructor(args, opts) {
@@ -190,23 +185,6 @@ module.exports = class extends Generator {
       this.templatePath("client/README.md"),
       this.destinationPath("client/README.md")
     );
-
-    // if (!srcAsRoot) {
-    //   console.log("NOT SrcAsRoot");
-    //   this.log(`${chalk.green("Using directory as project root!!")}`);
-
-    //   // Next JS Config
-    //   this.fs.copy(
-    //     this.templatePath("next.config.js"),
-    //     this.destinationPath("next.config.js")
-    //   );
-
-    //   // Store.js
-    //   this.fs.copy(
-    //     this.templatePath("_store.js"),
-    //     this.destinationPath("store.js")
-    //   );
-    // }
   }
 
   // 6)
