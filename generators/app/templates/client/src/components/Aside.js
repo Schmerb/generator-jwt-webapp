@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import styled, { css } from 'styled-components';
 
 import AsideSlider from 'components/AsideSlider';
 
@@ -75,26 +76,26 @@ const Aside = props => {
       {...props}
       renderMenu={() => (
         <>
-          <ul>
-            <li>
+          <List>
+            <Item>
               <a onClick={handleChangePassword} href="/change-password">
                 Change My Password
               </a>
-            </li>
-            <li>
+            </Item>
+            <Item>
               <a onClick={openAccountSettings} href="/account-settings">
                 Account Settings
               </a>
-            </li>
-          </ul>
+            </Item>
+          </List>
           <h3 style={{ color: 'red' }}>Dangerous!</h3>
-          <ul>
-            <li>
+          <List>
+            <Item>
               <a onClick={openDeleteAccount} href="#!">
                 Delete Account
               </a>
-            </li>
-          </ul>
+            </Item>
+          </List>
         </>
       )}
     />
@@ -114,3 +115,22 @@ const mapStateToProps = ({ display }) => {
   };
 };
 export default connect(mapStateToProps)(Aside);
+
+const List = styled.ul`
+  list-style: none;
+`;
+const Item = styled.li`
+  &:hover {
+    a {
+      color: ${({ theme }) => theme.colors.Compliment};
+    }
+  }
+  a {
+    color: ${({ theme }) => theme.colors.Primary};
+    display: inline-block;
+    width: 100%;
+    line-height: 1.6rem;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+`;
