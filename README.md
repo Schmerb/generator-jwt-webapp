@@ -1,7 +1,5 @@
 # generator-jwt-webapp [![NPM version][npm-image]][npm-url]
 
-<!-- [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url] -->
-
 > React / NextJS frotnend using JWT token authentication via Mongodb backed Node instance.
 
 ## Installation
@@ -69,3 +67,5 @@ Apache-2.0 © [Mike Schmerbeck]()
 [daviddm-url]: https://david-dm.org/generator-jwt-webapp
 [coveralls-image]: https://coveralls.io/repos//generator-jwt-webapp/badge.svg
 [coveralls-url]: https://coveralls.io/r//generator-jwt-webapp
+
+<!-- [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url] -->
