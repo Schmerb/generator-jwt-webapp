@@ -1,7 +1,5 @@
 # generator-jwt-webapp [![NPM version][npm-image]][npm-url]
 
- <!-- [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url] -->
-
 ## Installation
 
 First, install [Yeoman](http://yeoman.io) and generator-jwt-webapp using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
@@ -67,3 +65,5 @@ Apache-2.0 © [Mike Schmerbeck]()
 [daviddm-url]: https://david-dm.org/generator-jwt-webapp
 [coveralls-image]: https://coveralls.io/repos//generator-jwt-webapp/badge.svg
 [coveralls-url]: https://coveralls.io/r//generator-jwt-webapp
+
+ <!-- [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url] -->
