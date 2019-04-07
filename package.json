@@ -8,6 +8,7 @@
     "email": "mikeschmerbeck@gmail.com",
     "url": ""
   },
+  "repository": "https://github.com/Schmerb/generator-jwt-webapp",
   "files": [
     "generators"
   ],
