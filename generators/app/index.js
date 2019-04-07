@@ -130,7 +130,7 @@ module.exports = class extends Generator {
     // API
 
     this.fs.copyTpl(
-      this.templatePath("api/package.json"),
+      this.templatePath("api/_package.json"),
       this.destinationPath("api/package.json"),
       {
         name: api
@@ -138,26 +138,26 @@ module.exports = class extends Generator {
     );
 
     this.fs.copy(
-      this.templatePath("api/.babelrc"),
+      this.templatePath("api/_.babelrc"),
       this.destinationPath("api/.babelrc")
     );
     this.fs.copy(
-      this.templatePath("api/.gitignore"),
+      this.templatePath("api/_.gitignore"),
       this.destinationPath("api/.gitignore")
     );
     this.fs.copy(
-      this.templatePath("api/README.md"),
+      this.templatePath("api/_README.md"),
       this.destinationPath("api/README.md")
     );
     this.fs.copy(
-      this.templatePath("api/.env"),
+      this.templatePath("api/_.env"),
       this.destinationPath("api/.env")
     );
 
     // CLIENT
 
     this.fs.copyTpl(
-      this.templatePath("client/package.json"),
+      this.templatePath("client/_package.json"),
       this.destinationPath("client/package.json"),
       {
         name: client,
@@ -166,23 +166,23 @@ module.exports = class extends Generator {
     );
 
     this.fs.copy(
-      this.templatePath("client/.babelrc"),
+      this.templatePath("client/_.babelrc"),
       this.destinationPath("client/.babelrc")
     );
     this.fs.copy(
-      this.templatePath("client/.prettierrc"),
+      this.templatePath("client/_.prettierrc"),
       this.destinationPath("client/.prettierrc")
     );
     this.fs.copy(
-      this.templatePath("client/.eslintrc"),
+      this.templatePath("client/_.eslintrc"),
       this.destinationPath("client/.eslintrc")
     );
     this.fs.copy(
-      this.templatePath("client/.gitignore"),
+      this.templatePath("client/_.gitignore"),
       this.destinationPath("client/.gitignore")
     );
     this.fs.copy(
-      this.templatePath("client/README.md"),
+      this.templatePath("client/_README.md"),
       this.destinationPath("client/README.md")
     );
   }
