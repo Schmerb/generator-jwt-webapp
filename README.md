@@ -1,6 +1,8 @@
+
 # generator-jwt-webapp [![NPM version][npm-image]][npm-url]
 
 > React / NextJS frotnend using JWT token authentication via Mongodb backed Node instance.
+
 
 ## Installation
 

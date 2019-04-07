@@ -26,7 +26,7 @@ module.exports = class extends Generator {
     // Have Yeoman greet the user.
     this.log(
       yosay(
-        `Welcome to the primo ${chalk.red("generator-node-jwt")} generator!`
+        `Welcome to the primo ${chalk.red("generator-jwt-webapp")} generator!`
       )
     );
 
