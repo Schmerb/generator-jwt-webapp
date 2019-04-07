@@ -119,15 +119,27 @@ module.exports = class extends Generator {
 
     const { srcAsRoot, api, client } = this.answers;
 
-    if (srcAsRoot) {
-      this.log(`${chalk.green("Using /src directory as project root!!")}`);
-      this.fs.copy(this.templatePath("api"), this.destinationPath("api"));
-      this.fs.copy(this.templatePath("client"), this.destinationPath("client"));
-    }
+    // If (srcAsRoot) {
+    //   this.log(`${chalk.green("Using /src directory as project root!!")}`);
+    //   this.fs.copy(this.templatePath("api"), this.destinationPath("api"));
+    //   this.fs.copy(this.templatePath("client"), this.destinationPath("client"));
+    // }
+
+    this.log(`${chalk.green("Using /src directory as project root!!")}`);
+    this.fs.copy(this.templatePath("api/src"), this.destinationPath("api/src"));
+    this.fs.copy(
+      this.templatePath("client/src"),
+      this.destinationPath("client/src")
+    );
 
     // Project Root files
 
     // API
+
+    this.fs.copy(
+      this.templatePath("api/_server.js"),
+      this.destinationPath("api/server.js")
+    );
 
     this.fs.copyTpl(
       this.templatePath("api/_package.json"),
@@ -149,12 +161,28 @@ module.exports = class extends Generator {
       this.templatePath("api/_README.md"),
       this.destinationPath("api/README.md")
     );
-    this.fs.copy(
+    this.fs.copyTpl(
       this.templatePath("api/_.env"),
-      this.destinationPath("api/.env")
+      this.destinationPath("api/.env"),
+      {
+        databaseURI: this.answers.databaseURI,
+        testDatabaseURI: this.answers.testDatabaseURI,
+        port: this.answers.port,
+        jwtSecret: this.answers.jwtSecret,
+        jwtExpiray: this.answers.jwtExpiray
+      }
     );
 
     // CLIENT
+
+    this.fs.copy(
+      this.templatePath("client/_next.config.js"),
+      this.destinationPath("client/next.config.js")
+    );
+    this.fs.copy(
+      this.templatePath("client/_store.js"),
+      this.destinationPath("client/store.js")
+    );
 
     this.fs.copyTpl(
       this.templatePath("client/_package.json"),

@@ -15,7 +15,7 @@ const Footer = memo(() => (
   <Container>
     <InnerWrapper>
       <p style={{ color: 'lightgrey' }}>
-        Copyright &copy; The Virtual Forge 2019
+        Copyright &copy; Mike Schmerbeck 2019
       </p>
       <SocialMediaIcons links={links} />
     </InnerWrapper>
