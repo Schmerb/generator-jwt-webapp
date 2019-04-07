@@ -59,7 +59,7 @@ localhost:3000
 
 ## License
 
-Apache-2.0 © [Mike Schmerbeck]()
+Apache-2.0 © [Mike Schmerbeck](https://www.mikeschmerbeck.com/)
 
 [npm-image]: https://badge.fury.io/js/generator-jwt-webapp.svg
 [npm-url]: https://npmjs.org/package/generator-jwt-webapp
