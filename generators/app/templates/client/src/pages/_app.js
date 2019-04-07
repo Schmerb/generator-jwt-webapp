@@ -57,7 +57,7 @@ class MyApp extends App {
       <Container>
         <Provider store={reduxStore}>
           <ThemeProvider theme={Theme}>
-            <Layout title="V2GO | 2019">
+            <Layout title="Title | 2019">
               <LoadingScreen loaded={loaded} />
               <FadeIn loaded={loaded}>
                 {loaded && <Component key={router.route} {...pageProps} />}
